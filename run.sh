@@ -7,6 +7,9 @@ echo "--------------------------------------------------------------------"
 docker build --tag spark_task services/spark_task_image
 docker push 127.0.0.1:5050/spark_task
 
+docker build --tag spark services/spark_image
+docker push 127.0.0.1:5050/spark
+
 docker-compose build
 
 echo "--------------------------------------------------------------------"
