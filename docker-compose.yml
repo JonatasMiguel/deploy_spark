@@ -1,0 +1,71 @@
+version: "3.8"
+
+x-deploy: &default-deploy
+  replicas: 1
+  restart_policy:
+    condition: on-failure
+
+x-deploy-manager: &default-deploy-manager
+  <<: *default-deploy
+  placement:
+    constraints:
+      - "node.role==manager"
+
+x-deploy-worker: &default-deploy-worker
+  <<: *default-deploy
+  placement:
+    constraints:
+      - "node.role==worker"
+
+services:
+  images:
+    image: registry:2.7.1
+    ports:
+      - "5050:5000"
+    deploy: *default-deploy-manager
+    networks:
+      - database
+    volumes:
+      - "images:/var/lib/registry"
+
+  visualizer:
+    image: dockersamples/visualizer:latest
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    ports:
+      - "8000:8080"
+    deploy: *default-deploy-manager
+
+  sparkmaster:
+    build: services/spark_image
+    image: 127.0.0.1:5050/spark
+    ports:
+      - "4040:4040"
+      - "7077:7077"
+      - "8080:8080"
+    environment:
+      - SPARK_ROLE=master
+    deploy: *default-deploy-worker
+    networks:
+      - spark
+
+  sparkworker:
+    image: 127.0.0.1:5050/spark
+    entrypoint: dockerize -wait tcp://sparkmaster:7077 -timeout 240s /sbin/my_init
+    ports:
+      - "8081:8081"
+      - "41352:41352"
+    links:
+      - sparkmaster
+    environment:
+      - SPARK_MASTER=sparkmaster
+      - SPARK_ROLE=slave
+    deploy: *default-deploy-worker
+    networks:
+      - spark
+
+networks:
+  spark:
+
+volumes:
+  images:
