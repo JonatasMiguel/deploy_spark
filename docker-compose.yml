@@ -18,27 +18,16 @@ x-deploy-worker: &default-deploy-worker
       - "node.role==worker"
 
 services:
-  images:
-    image: registry:2.7.1
-    ports:
-      - "5050:5000"
-    deploy: *default-deploy-manager
-    networks:
-      - database
-    volumes:
-      - "images:/var/lib/registry"
-
   visualizer:
     image: dockersamples/visualizer:latest
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
     ports:
-      - "8000:8080"
+      - "80:8080"
     deploy: *default-deploy-manager
 
   sparkmaster:
-    build: services/spark_image
-    image: 127.0.0.1:5050/spark
+    image: spark_image
     ports:
       - "4040:4040"
       - "7077:7077"
@@ -50,7 +39,7 @@ services:
       - spark
 
   sparkworker:
-    image: 127.0.0.1:5050/spark
+    image: spark_image
     entrypoint: dockerize -wait tcp://sparkmaster:7077 -timeout 240s /sbin/my_init
     ports:
       - "8081:8081"
@@ -66,7 +55,3 @@ services:
 
 networks:
   spark:
-  database:
-
-volumes:
-  images:
