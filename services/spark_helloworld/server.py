@@ -24,7 +24,7 @@ ss = (
         .config("spark.driver.port", os.environ["SPARK_DRIVER_PORT"])
         .config("spark.driver.host", os.environ["HELLO_HOST_NAME"])
         .master(
-            f"spark://{os.environ[SPARKMASTER_HOST]}:{os.os.environ[SPARKMASTER_PORT]}"
+            f"spark://{os.environ[SPARKMASTER_HOST]}:{os.environ[SPARKMASTER_PORT]}"
         )
         .getOrCreate()
 )
