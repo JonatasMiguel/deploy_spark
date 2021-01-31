@@ -44,8 +44,6 @@ services:
     ports:
       - "8081:8081"
       - "41352:41352"
-    links:
-      - sparkmaster
     environment:
       - SPARK_MASTER=sparkmaster
       - SPARK_ROLE=slave
