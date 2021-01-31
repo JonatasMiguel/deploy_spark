@@ -20,8 +20,8 @@ echo "--------------------------------------------------------------------"
 echo "Deploying in swarm cluster..."
 echo "--------------------------------------------------------------------"
 
-docker stack deploy --compose-file=docker-compose.yml microservices
-docker stack services microservices
+docker stack deploy --compose-file=docker-compose.yml swarm
+docker stack services swarm
 
 echo "--------------------------------------------------------------------"
 echo "End."
