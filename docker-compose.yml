@@ -51,5 +51,19 @@ services:
     networks:
       - spark
 
+  helloworld:
+    image: helloworld_image
+    ports:
+      - "5005:5005"
+      - "41200:41200"
+    extra_hosts:
+      - "helloworld:0.0.0.0"
+    depends_on:
+      - sparkmaster
+      - sparkworker
+    deploy: *default-deploy-manager
+    networks:
+      - spark
+
 networks:
   spark:
