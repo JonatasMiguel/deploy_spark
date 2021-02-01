@@ -51,22 +51,33 @@ services:
     networks:
       - cluster_network
 
-  spark-sample:
-    image: spark_sample_image
+  flask:
+    image: flask_image
     extra_hosts:
       - "spark-sample:0.0.0.0"
     ports:
       - "5005:5005"
       - "41105:41105"
-    depends_on:
-      - sparkmaster
-      - sparkworker
     deploy: *default-deploy-worker
     networks:
       - cluster_network
 
+  # spark-sample:
+  #   image: spark_sample_image
+  #   extra_hosts:
+  #     - "spark-sample:0.0.0.0"
+  #   ports:
+  #     - "5005:5005"
+  #     - "41105:41105"
+  #   depends_on:
+  #     - sparkmaster
+  #     - sparkworker
+  #   deploy: *default-deploy-worker
+  #   networks:
+  #     - cluster_network
+
 networks:
   cluster_network:
     attachable: true
-      ipam:
+    ipam:
         driver: default
