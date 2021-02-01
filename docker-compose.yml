@@ -67,6 +67,6 @@ services:
 
 networks:
   cluster_network:
-        attachable: true
-        ipam:
-                driver: default
+    attachable: true
+      ipam:
+        driver: default
