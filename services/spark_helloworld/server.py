@@ -17,31 +17,34 @@ SPARKMASTER_HOST = "SPARKMASTER_HOST"
 SPARKMASTER_PORT = "SPARKMASTER_PORT"
 SPARK_DRIVER_PORT = "SPARK_DRIVER_PORT"
 
-ss = (  
-    SparkSession
-        .builder
-        .appName("helloworld")
-        .config("spark.driver.port", os.environ[SPARK_DRIVER_PORT])
-        .config("spark.driver.host", os.environ[HELLO_HOST_NAME])
-        .master("spark://"
-                + os.environ[SPARKMASTER_HOST]
-                + ":"
-                + str(os.environ[SPARKMASTER_PORT])
-                )
-        .getOrCreate()
-)
-
 app = Flask(__name__)
 
-@app.route("/helloworld/<int:pirange>", methods=["GET"])
+@app.route("/<int:pirange>", methods=["GET"])
 def hello_world(pirange):
     def inside(p):
         x, y = os.urandom.random(), os.urandom.random()
         return x*x + y*y < 1
 
+    ss = (  
+        SparkSession
+            .builder
+            .appName("helloworld")
+            .config("spark.driver.port", os.environ[SPARK_DRIVER_PORT])
+            .config("spark.driver.host", os.environ[HELLO_HOST_NAME])
+            .master("spark://"
+                    + os.environ[SPARKMASTER_HOST]
+                    + ":"
+                    + str(os.environ[SPARKMASTER_PORT])
+                    )
+            .getOrCreate()
+    )
+
+
     sc: SparkContext = ss.sparkContext
     count = sc.parallelize(range(0, pirange)) \
                 .filter(inside).count()
+
+    ss.stop()
 
     return f"<html> <h1> Pi is roughly {4.0*count / 100} </h1> </html>" 
 

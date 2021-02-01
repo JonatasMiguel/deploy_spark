@@ -28,7 +28,6 @@ services:
 
   sparkmaster:
     image: spark_image
-    container_name: "sparkmaster"
     ports:
       - "4040:4040"
       - "7077:7077"
@@ -56,17 +55,17 @@ services:
 
   helloworld:
     image: helloworld_image
-    links:
-      - "sparkmaster"
     ports:
       - "5005:5005"
-      - "41200:41200"
+      - "41100:41100"
     depends_on:
       - sparkmaster
       - sparkworker
     deploy: *default-deploy-manager
     networks:
       - spark
+    extra_hosts:
+      - "helloworld:0.0.0.0"
 
 networks:
   spark:
