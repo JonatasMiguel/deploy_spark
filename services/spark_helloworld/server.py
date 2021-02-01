@@ -13,73 +13,48 @@ HELLO_HOST_IP = "HELLO_HOST_IP"
 HELLO_HOST_PORT = "HELLO_HOST_PORT"
 HELLO_HOST_NAME = "HELLO_HOST_NAME"
 
-SPARK_MASTER_HOST = "SPARK_MASTER_HOST"
+SPARK_MASTER_HOST = "SPARKMASTER_HOST"
 SPARK_MASTER_PORT = "SPARK_MASTER_PORT"
 SPARK_DRIVER_PORT = "SPARK_DRIVER_PORT"
 
-# app = Flask(__name__)
+app = Flask(__name__)
 
-# @app.route("/")
-# def index():
-#     return f"<html> <h1> HELLO, WORLD </h1> </html>"
-
-
-# @app.route("/<int:pirange>")
-# def hello_world(pirange):
-#     def inside(p):
-#         x, y = os.urandom.random(), os.urandom.random()
-#         return x*x + y*y < 1
-
-#     ss = (
-#         SparkSession
-#             .builder
-#             .appName("helloworld")
-#             .config("spark.driver.port", os.environ[SPARK_DRIVER_PORT])
-#             .config("spark.driver.host", os.environ[HELLO_HOST_NAME])
-#             .master("spark://"
-#                     + os.environ[SPARKMASTER_HOST]
-#                     + ":"
-#                     + str(os.environ[SPARKMASTER_PORT])
-#                     )
-#             .getOrCreate()
-#     )
+@app.route("/")
+def index():
+    return f"<html> <h1> HELLO, WORLD </h1> </html>"
 
 
-#     sc: SparkContext = ss.sparkContext
-#     count = sc.parallelize(range(0, pirange)) \
-#                 .filter(inside).count()
+@app.route("/<int:pirange>")
+def hello_world(pirange):
+    def inside(p):
+        x, y = os.urandom.random(), os.urandom.random()
+        return x*x + y*y < 1
 
-#     ss.stop()
-
-#     return f"<html> <h1> Pi is roughly {4.0*count / 100} </h1> </html>"
-
-
-# if __name__ == "__main__":
-#     app.run(host=os.environ[HELLO_HOST_IP],
-#             port=int(os.environ[HELLO_HOST_PORT]))
-
-def inside(p):
-    x, y = os.urandom.random(), os.urandom.random()
-    return x*x + y*y < 1
-
-
-ss = (
-    SparkSession
-    .builder
-    .appName("helloworld")
-    .config("spark.driver.port", os.environ[SPARK_DRIVER_PORT])
-    .config("spark.driver.host", os.environ[HELLO_HOST_NAME])
-    .master("spark://"
-            + os.environ[SPARK_MASTER_HOST]
-            + ":"
-            + str(os.environ[SPARK_MASTER_PORT])
-            )
-    .getOrCreate()
-)
+    ss = (
+        SparkSession
+            .builder
+            .appName("helloworld")
+            .config("spark.driver.port", os.environ[SPARK_DRIVER_PORT])
+            .config("spark.driver.host", os.environ[HELLO_HOST_NAME])
+            .master("spark://"
+                    + os.environ[SPARK_MASTER_HOST]
+                    + ":"
+                    + str(os.environ[SPARK_MASTER_PORT])
+                    )
+            .getOrCreate()
+    )
 
 
-sc: SparkContext = ss.sparkContext
-count = sc.parallelize(range(0, 100)) \
-    .filter(inside).count()
+    sc: SparkContext = ss.sparkContext
+    count = sc.parallelize(range(0, pirange)) \
+                .filter(inside).count()
 
-print(f"Pi is roughly {4.0*count / 100}")
+    ss.stop()
+
+    return f"<html> <h1> Pi is roughly {4.0*count / 100} </h1> </html>"
+
+
+if __name__ == "__main__":
+    app.run(host=os.environ[HELLO_HOST_IP],
+            port=int(os.environ[HELLO_HOST_PORT]))
+
