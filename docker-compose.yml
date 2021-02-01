@@ -41,8 +41,6 @@ services:
   sparkworker:
     image: spark_image
     entrypoint: dockerize -wait tcp://sparkmaster:7077 -timeout 240s /sbin/my_init
-    links:
-      - "sparkmaster"
     ports:
       - "8081:8081"
       - "41352:41352"
