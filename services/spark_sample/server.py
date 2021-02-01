@@ -9,11 +9,11 @@ HTTP_STATUS_CODE_CONFLICT = 409
 HTTP_STATUS_CODE_NOT_ACCEPTABLE = 406
 HTTP_STATUS_CODE_NOT_FOUND = 404
 
-HELLO_HOST_IP = "HELLO_HOST_IP"
-HELLO_HOST_PORT = "HELLO_HOST_PORT"
-HELLO_HOST_NAME = "HELLO_HOST_NAME"
+SAMPLE_HOST_IP = "SAMPLE_HOST_IP"
+SAMPLE_HOST_PORT = "SAMPLE_HOST_PORT"
+SAMPLE_HOST_NAME = "SAMPLE_HOST_NAME"
 
-SPARK_MASTER_HOST = "SPARKMASTER_HOST"
+SPARK_MASTER_HOST = "SPARK_MASTER_HOST"
 SPARK_MASTER_PORT = "SPARK_MASTER_PORT"
 SPARK_DRIVER_PORT = "SPARK_DRIVER_PORT"
 
@@ -35,7 +35,7 @@ def hello_world(pirange):
             .builder
             .appName("helloworld")
             .config("spark.driver.port", os.environ[SPARK_DRIVER_PORT])
-            .config("spark.driver.host", os.environ[HELLO_HOST_NAME])
+            .config("spark.driver.host", os.environ[SAMPLE_HOST_NAME])
             .master("spark://"
                     + os.environ[SPARK_MASTER_HOST]
                     + ":"
@@ -55,6 +55,6 @@ def hello_world(pirange):
 
 
 if __name__ == "__main__":
-    app.run(host=os.environ[HELLO_HOST_IP],
-            port=int(os.environ[HELLO_HOST_PORT]))
+    app.run(host=os.environ[SAMPLE_HOST_IP],
+            port=int(os.environ[SAMPLE_HOST_PORT]))
 
