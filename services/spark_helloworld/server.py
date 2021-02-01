@@ -13,8 +13,8 @@ HELLO_HOST_IP = "HELLO_HOST_IP"
 HELLO_HOST_PORT = "HELLO_HOST_PORT"
 HELLO_HOST_NAME = "HELLO_HOST_NAME"
 
-SPARKMASTER_HOST = "SPARKMASTER_HOST"
-SPARKMASTER_PORT = "SPARKMASTER_PORT"
+SPARK_MASTER_HOST = "SPARK_MASTER_HOST"
+SPARK_MASTER_PORT = "SPARK_MASTER_PORT"
 SPARK_DRIVER_PORT = "SPARK_DRIVER_PORT"
 
 # app = Flask(__name__)
@@ -70,9 +70,9 @@ ss = (
     .config("spark.driver.port", os.environ[SPARK_DRIVER_PORT])
     .config("spark.driver.host", os.environ[HELLO_HOST_NAME])
     .master("spark://"
-            + os.environ[SPARKMASTER_HOST]
+            + os.environ[SPARK_MASTER_HOST]
             + ":"
-            + str(os.environ[SPARKMASTER_PORT])
+            + str(os.environ[SPARK_MASTER_PORT])
             )
     .getOrCreate()
 )
