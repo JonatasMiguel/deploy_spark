@@ -34,7 +34,7 @@ services:
       - "8080:8080"
     environment:
       - SPARK_ROLE=master
-    deploy: *default-deploy-worker
+    deploy: *default-deploy-manager
     networks:
       - spark
 
@@ -59,7 +59,7 @@ services:
     depends_on:
       - sparkmaster
       - sparkworker
-    deploy: *default-deploy-manager
+    deploy: *default-deploy-worker
     networks:
       - spark
 
