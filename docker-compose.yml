@@ -28,6 +28,7 @@ services:
 
   sparkmaster:
     image: spark_image
+    container_name: sparkmaster
     ports:
       - "4040:4040"
       - "7077:7077"
@@ -35,12 +36,13 @@ services:
     environment:
       - SPARK_ROLE=master
     deploy: *default-deploy-worker
-    networks:
-      - spark
+
 
   sparkworker:
     image: spark_image
     entrypoint: dockerize -wait tcp://sparkmaster:7077 -timeout 240s /sbin/my_init
+    links:
+      - "sparkmaster"
     ports:
       - "8081:8081"
       - "41352:41352"
@@ -48,22 +50,16 @@ services:
       - SPARK_MASTER=sparkmaster
       - SPARK_ROLE=slave
     deploy: *default-deploy-worker
-    networks:
-      - spark
+
 
   helloworld:
     image: helloworld_image
+    links:
+      - "sparkmaster"
     ports:
       - "5005:5005"
       - "41200:41200"
-    extra_hosts:
-      - "helloworld:0.0.0.0"
     depends_on:
       - sparkmaster
       - sparkworker
     deploy: *default-deploy-manager
-    networks:
-      - spark
-
-networks:
-  spark:
