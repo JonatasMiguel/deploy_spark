@@ -28,7 +28,7 @@ services:
 
   sparkmaster:
     image: spark_image
-    container_name: sparkmaster
+    container_name: "sparkmaster"
     ports:
       - "4040:4040"
       - "7077:7077"
@@ -36,7 +36,8 @@ services:
     environment:
       - SPARK_ROLE=master
     deploy: *default-deploy-worker
-
+    networks:
+      - spark
 
   sparkworker:
     image: spark_image
@@ -50,7 +51,8 @@ services:
       - SPARK_MASTER=sparkmaster
       - SPARK_ROLE=slave
     deploy: *default-deploy-worker
-
+    networks:
+      - spark
 
   helloworld:
     image: helloworld_image
@@ -63,3 +65,8 @@ services:
       - sparkmaster
       - sparkworker
     deploy: *default-deploy-manager
+    networks:
+      - spark
+
+networks:
+  spark:
