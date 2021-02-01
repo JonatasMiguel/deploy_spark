@@ -36,7 +36,7 @@ services:
       - SPARK_ROLE=master
     deploy: *default-deploy-manager
     networks:
-      - spark
+      - cluster_network
 
   sparkworker:
     image: spark_image
@@ -49,7 +49,7 @@ services:
       - SPARK_ROLE=slave
     deploy: *default-deploy-worker
     networks:
-      - spark
+      - cluster_network
 
   spark-sample:
     image: spark_sample_image
@@ -63,7 +63,10 @@ services:
       - sparkworker
     deploy: *default-deploy-worker
     networks:
-      - spark
+      - cluster_network
 
 networks:
-  spark:
+  cluster_network:
+        attachable: true
+        ipam:
+                driver: default
