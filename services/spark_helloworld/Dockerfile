@@ -11,4 +11,4 @@ ENV HELLO_HOST_IP "0.0.0.0"
 ENV SPARK_MASTER_HOST "sparkmaster"
 ENV SPARK_MASTER_PORT 7077
 ENV SPARK_DRIVER_PORT 41100
-CMD ["python", "server.py"]
+# CMD ["python", "server.py"]
