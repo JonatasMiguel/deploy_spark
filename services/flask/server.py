@@ -25,7 +25,7 @@ def index():
     return f"<html> <h1> HELLO, WORLD </h1> </html>"
 
 
-@app.route("/<int:pirange>")
+@app.route("/helloworld")
 def hello_world(pirange):
     def inside(p):
         x, y = os.urandom.random(), os.urandom.random()
@@ -44,7 +44,7 @@ def hello_world(pirange):
         .getOrCreate()
     )
     sc: SparkContext = ss.sparkContext
-    count = sc.parallelize(range(0, pirange)) \
+    count = sc.parallelize(range(0, 1000)) \
         .filter(inside).count()
 
     return f"<html><h1>Pi is roughly {4.0*count / 100}</h1></html>"
