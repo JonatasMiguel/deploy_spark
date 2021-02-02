@@ -9,7 +9,6 @@ docker build --tag spark_task_image services/spark_task_image
 docker build --tag spark_image services/spark_image
 
 docker build --tag flask_image services/flask
-# docker build --tag spark_sample_image services/spark_sample
 
 docker-compose build
 
