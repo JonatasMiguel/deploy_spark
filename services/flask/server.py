@@ -19,13 +19,12 @@ SPARK_DRIVER_PORT = "SPARK_DRIVER_PORT"
 
 app = Flask(__name__)
 
-
 @app.route("/")
 def index():
     return f"<html> <h1> HELLO, WORLD </h1> </html>"
 
 
-@app.route("/helloworld")
+@app.route("/helloworld", methods=["GET"])
 def hello_world(pirange):
     def inside(p):
         x, y = os.urandom.random(), os.urandom.random()
