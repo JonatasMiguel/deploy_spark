@@ -54,7 +54,7 @@ services:
   flask:
     image: flask_image
     extra_hosts:
-      - "spark-sample:0.0.0.0"
+      - "flask:0.0.0.0"
     ports:
       - "5005:5005"
       - "41105:41105"
@@ -66,4 +66,4 @@ networks:
   cluster_network:
     attachable: true
     ipam:
-        driver: default
+       driver: default
