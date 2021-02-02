@@ -1,4 +1,5 @@
 import os
+import random
 from flask import jsonify, request, Flask, send_file
 from pyspark.context import SparkContext
 from pyspark.sql import SparkSession
@@ -22,7 +23,7 @@ app = Flask(__name__)
 @app.route("/")
 def index():
     def inside(p):
-        x, y = os.urandom.random(), os.urandom.random()
+        x, y = random.random(), random.random()
         return x*x + y*y < 1
         
     ss = (
