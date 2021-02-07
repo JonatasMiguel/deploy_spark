@@ -3,6 +3,8 @@ FROM spark_task_image
 WORKDIR /usr/src/stream
 COPY . /usr/src/stream
 
+RUN pip install requests
+
 ENV SAMPLE_HOST_NAME "streaming"
 ENV SAMPLE_HOST_PORT 5005
 ENV SAMPLE_HOST_IP "0.0.0.0"
