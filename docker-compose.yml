@@ -72,7 +72,7 @@ services:
     networks:
       - cluster_network
 
-  dashboards:
+  twitter:
     image: twitter_image
     extra_hosts:
       - "twitter_image:0.0.0.0"
