@@ -82,7 +82,7 @@ if __name__ == "__main__":
     track = track.split(',') if track else ['bbb', 'bbb21', "Big brother", "reality"]
     lang = [lang if lang else "pt"]
 
-    listener = StdOutListener(ip=os.environ[TWITTER_IP], port=os.environ[TWITTER_PORT])
+    listener = StdOutListener(ip=os.environ[TWITTER_IP], port=int(os.environ[TWITTER_PORT]))
     auth = OAuthHandler(consumer_key=CONSUMER_KEY,
                         consumer_secret=CONSUMER_SECRET)
     auth.set_access_token(ACCESS_TOKEN, ACCESS_SECRET)

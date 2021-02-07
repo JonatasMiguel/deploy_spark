@@ -18,4 +18,4 @@ ENV DASHBOARD_CLIENT = "dashboards"
 ENV DASHBOARD_PORT = 5009
 
 
-CMD ["python", "streaming.py"]
+CMD ["python", "server.py"]
