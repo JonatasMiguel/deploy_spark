@@ -51,16 +51,37 @@ services:
     networks:
       - cluster_network
 
-  flask:
-    image: flask_image
+  streaming:
+    image: streaming_image
     extra_hosts:
-      - "flask:0.0.0.0"
+      - "streaming_image:0.0.0.0"
     ports:
       - "5005:5005"
       - "41105:41105"
     deploy: *default-deploy-worker
     networks:
       - cluster_network
+
+  dashboards:
+    image: dashboards_image
+    extra_hosts:
+      - "dashboards_image:0.0.0.0"
+    ports:
+      - "5009:5009"
+    deploy: *default-deploy-worker
+    networks:
+      - cluster_network
+
+  dashboards:
+    image: twitter_image
+    extra_hosts:
+      - "twitter_image:0.0.0.0"
+    ports:
+      - "9017:9017"
+    deploy: *default-deploy-manager
+    networks:
+      - cluster_network
+
 
 networks:
   cluster_network:
