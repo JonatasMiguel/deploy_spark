@@ -8,7 +8,7 @@ WORKDIR /app
 COPY . /app
 
 ENV TWITTER_IP "0.0.0.0"
-ENV TWITTER_PORT = 9017
+ENV TWITTER_PORT 9017
 
 RUN pip install tweepy
 
