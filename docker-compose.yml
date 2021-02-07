@@ -78,7 +78,7 @@ services:
       - "twitter_image:0.0.0.0"
     ports:
       - "9017:9017"
-    deploy: *default-deploy-manager
+    deploy: *default-deploy-worker
     networks:
       - cluster_network
 
