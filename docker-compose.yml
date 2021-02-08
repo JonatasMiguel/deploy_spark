@@ -57,7 +57,7 @@ services:
       - "streaming_image:0.0.0.0"
     ports:
       - "5005:5005"
-      - "41105:41105"
+      - "41100:41100"
     deploy: *default-deploy-worker
     networks:
       - cluster_network
