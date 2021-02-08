@@ -69,7 +69,7 @@ def process_hashtags_rdd(time, rdd):
             f"hashtag_count").collect()]
         # initialize and send the data through REST API
         request_data = {'label': str(top_tags), 'data': str(tags_count)}
-        requests.post(f'http://localhost:5001/updateDataHashtag', data=request_data)
+        requests.post(f'http://{os.environ[DASHBOARD_CLIENT]}:{os.environ[DASHBOARD_PORT]}/updateDataHashtag', data=request_data)
 
     except Exception as e:
         print("Error: %s" % e)
@@ -101,7 +101,7 @@ def process_words_rdd(time, rdd):
             f"word_count").collect()]
         # initialize and send the data through REST API
         request_data = {'label': str(top_tags), 'data': str(tags_count)}
-        requests.post(f'http://{os.environ[DASHBOARD_CLIENT]}:{os.environ[DASHBOARD_PORT]}/updateDataHashtag', data=request_data)
+        requests.post(f'http://{os.environ[DASHBOARD_CLIENT]}:{os.environ[DASHBOARD_PORT]}/updateDataWord', data=request_data)
 
     except Exception as e:
         print("Error: %s" % e)
@@ -151,7 +151,8 @@ if __name__ == "__main__":
 
 
     # filter the words to get only hashtags, then map each hashtag to be a pair of (hashtag,1)
-    trending_words = words.filter(lambda w: w.strip() and w.lower() not in stopwords and '#' not in w).map(lambda x: (x, 1))
+    # trending_words = words.filter(lambda w: w.strip() and w.lower() not in stopwords and '#' not in w).map(lambda x: (x, 1))
+    trending_words = words.filter(lambda w: "@" in w).map(lambda x: (x, 1))
     # adding the count of each hashtag to its last count
     trending_words_totals = trending_words.updateStateByKey(aggregate_tags_count)
     # do processing for each RDD generated in each interval

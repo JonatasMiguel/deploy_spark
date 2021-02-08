@@ -7,7 +7,7 @@
     	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	
 	</head>
-	<body>
+	<body onload="graph1();graph2();">
         <div>
         	<h2>Top Trending Twitter Hashtags by Track</h2>
         	<div style="width:700px; height=500px">
@@ -24,6 +24,7 @@
 	</body>
 </html>
 <script>
+function graph1(){
     var ctx1 = document.getElementById("chart_hashtag");
     var myChart1 = new Chart(ctx1, {
          type: 'horizontalBar',
@@ -87,10 +88,12 @@
          myChart1.data.datasets[0].data = src_Data1;
          myChart1.update();
     },1000);
+}
 
+function graph2(){
     var ctx2 = document.getElementById("chart_word");
     var myChart2 = new Chart(ctx2, {
-         type: 'verticalBar',
+         type: 'horizontalBar',
          data: {
              labels: [{% for item in labels_word %}
                        "{{item}}",
@@ -133,7 +136,7 @@
              scales: {
                  yAxes: [{
                      ticks: {
-                         beginAtZero:true
+                         beginAtZero:false
                      }
                  }]
              }
@@ -151,4 +154,5 @@
          myChart2.data.datasets[0].data = src_Data2;
          myChart2.update();
     },1000);
- </script>
+}
+</script>

@@ -80,7 +80,7 @@ if __name__ == "__main__":
         log.info("Wrong usage. Execute with --help to see more.")
         sys.exit(1)
         
-    track = track.split(',') if track else ['bbb', 'bbb21', "Big brother", "reality"]
+    track = track.split(',') if track else ['vacina', 'covid', "pandemia"]
     lang = [lang if lang else "pt"]
 
     listener = StdOutListener(ip=os.environ[TWITTER_IP], port=int(os.environ[TWITTER_PORT]))
@@ -89,4 +89,5 @@ if __name__ == "__main__":
     auth.set_access_token(ACCESS_TOKEN, ACCESS_SECRET)
 
     stream = Stream(auth, listener)
-    stream.filter(track=track, languages=lang)
+    # stream.filter(track=track, languages=lang)
+    stream.sample(languages=lang)
