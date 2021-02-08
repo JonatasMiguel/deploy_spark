@@ -114,7 +114,7 @@ if __name__ == "__main__":
     ss = (
         SparkSession
         .builder
-        .appName("helloworld")
+        .appName("streaming")
         .config("spark.driver.port", os.environ[SPARK_DRIVER_PORT])
         .config("spark.driver.host", os.environ[SAMPLE_HOST_NAME])
         .master("spark://"

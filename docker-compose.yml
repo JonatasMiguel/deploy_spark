@@ -53,6 +53,11 @@ services:
 
   streaming:
     image: streaming_image
+    depends_on: 
+      - sparkmaster
+      - sparkworker
+      - dashboards
+      - twitter
     extra_hosts:
       - "streaming_image:0.0.0.0"
     ports:
