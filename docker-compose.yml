@@ -70,7 +70,7 @@ services:
   dashboards:
     image: dashboards_image
     extra_hosts:
-      - "dashboards_image:0.0.0.0"
+      - "dashboards:0.0.0.0"
     ports:
       - "5009:5009"
     deploy: *default-deploy-worker
@@ -80,7 +80,7 @@ services:
   twitter:
     image: twitter_image
     extra_hosts:
-      - "twitter_image:0.0.0.0"
+      - "twitter:0.0.0.0"
     ports:
       - "9017:9017"
     deploy: *default-deploy-worker
