@@ -59,7 +59,7 @@ services:
       - dashboards
       - twitter
     extra_hosts:
-      - "streaming_image:0.0.0.0"
+      - "streaming:0.0.0.0"
     ports:
       - "5005:5005"
       - "41100:41100"
