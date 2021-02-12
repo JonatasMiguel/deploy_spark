@@ -37,6 +37,8 @@ services:
     deploy: *default-deploy-manager
     networks:
       - cluster_network
+    volumes:
+      - app-volume
 
   sparkworker:
     image: spark_image
@@ -50,6 +52,8 @@ services:
     deploy: *default-deploy-worker
     networks:
       - cluster_network
+    volumes:
+      - app-volume
 
   streaming:
     image: streaming_image
@@ -66,6 +70,8 @@ services:
     deploy: *default-deploy-worker
     networks:
       - cluster_network
+    volumes:
+      - app-volume
 
   dashboards:
     image: dashboards_image
@@ -87,9 +93,11 @@ services:
     networks:
       - cluster_network
 
-
 networks:
   cluster_network:
     attachable: true
     ipam:
        driver: default
+
+volumes:
+  app-volume: ./checkpoint:/checkpoint
