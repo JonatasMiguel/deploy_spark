@@ -8,6 +8,7 @@ SAMPLE_HOST_PORT = "SAMPLE_HOST_PORT"
 SAMPLE_HOST_NAME = "SAMPLE_HOST_NAME"
 
 app = Flask(__name__)
+
 labels_hashtag = []
 values_hashtag = []
 

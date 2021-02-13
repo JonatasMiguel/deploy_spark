@@ -131,9 +131,9 @@ if __name__ == "__main__":
 
     # create the Streaming Context from the above spark context with interval size 2 seconds
     ssc = StreamingContext(sc, 2)
-
-    # setting a checkpoint to allow RDD recovery
-    ssc.checkpoint("/appdata/checkpoint")
+    
+	# setting a checkpoint to allow RDD recovery
+    ssc.checkpoint("/checkpoint/save")
 
     # read data from port 9009
     dataStream = ssc.socketTextStream(os.environ[TWITTER_CLIENT], int(os.environ[TWITTER_PORT]))
