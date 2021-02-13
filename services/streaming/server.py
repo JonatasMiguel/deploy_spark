@@ -133,7 +133,7 @@ if __name__ == "__main__":
     ssc = StreamingContext(sc, 2)
 
     # setting a checkpoint to allow RDD recovery
-    ssc.checkpoint("checkpoint")
+    ssc.checkpoint("/appdata/checkpoint")
 
     # read data from port 9009
     dataStream = ssc.socketTextStream(os.environ[TWITTER_CLIENT], int(os.environ[TWITTER_PORT]))

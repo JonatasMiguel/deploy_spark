@@ -89,5 +89,5 @@ if __name__ == "__main__":
     auth.set_access_token(ACCESS_TOKEN, ACCESS_SECRET)
 
     stream = Stream(auth, listener)
-    # stream.filter(track=track, languages=lang)
-    stream.sample(languages=lang)
+    stream.filter(track=track, languages=lang)
+    # stream.sample(languages=lang)
