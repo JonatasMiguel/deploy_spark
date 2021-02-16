@@ -18,20 +18,20 @@ echo "--------------------------------------------------------------------"
 echo "Pushing to dockerhub..."
 echo "--------------------------------------------------------------------"
 
-docker tag local-image:spark_task_image jonatasmiguelsd:spark_task_image
-docker push jonatasmiguelsd:spark_task_image
+docker tag spark_task_image jonatasmiguelsd/spark_task_image::latest
+docker push jonatasmiguelsd/spark_task_image
 
-docker tag local-image:spark_image jonatasmiguelsd:spark_image
-docker push jonatasmiguelsd:spark_image
+docker tag spark_image jonatasmiguelsd/spark_image:latest
+docker push jonatasmiguelsd/spark_image
 
-docker tag local-image:twitter_image jonatasmiguelsd:twitter_image
-docker push jonatasmiguelsd:twitter_image
+docker tag twitter_image jonatasmiguelsd/twitter_image:latest
+docker push jonatasmiguelsd/twitter_image
 
-docker tag local-image:dashboards_image jonatasmiguelsd:dashboards_image
-docker push jonatasmiguelsd:dashboards_image
+docker tag dashboards_image jonatasmiguelsd/dashboards_image:latest
+docker push jonatasmiguelsd/dashboards_image
 
-docker tag local-image:streaming_image jonatasmiguelsd:streaming_image
-docker push jonatasmiguelsd:streaming_image
+docker tag streaming_image jonatasmiguelsd/streaming_image:latest
+docker push jonatasmiguelsd/streaming_image
 
 docker-compose build
 
