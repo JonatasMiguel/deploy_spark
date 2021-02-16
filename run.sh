@@ -14,7 +14,24 @@ docker build --tag dashboards_image services/dashboards
 
 docker build --tag streaming_image services/streaming
 
+echo "--------------------------------------------------------------------"
+echo "Pushing to dockerhub..."
+echo "--------------------------------------------------------------------"
 
+docker tag local-image:spark_task_image jonatasmiguelsd:spark_task_image
+docker push jonatasmiguelsd:spark_task_image
+
+docker tag local-image:spark_image jonatasmiguelsd:spark_image
+docker push jonatasmiguelsd:spark_image
+
+docker tag local-image:twitter_image jonatasmiguelsd:twitter_image
+docker push jonatasmiguelsd:twitter_image
+
+docker tag local-image:dashboards_image jonatasmiguelsd:dashboards_image
+docker push jonatasmiguelsd:dashboards_image
+
+docker tag local-image:streaming_image jonatasmiguelsd:streaming_image
+docker push jonatasmiguelsd:streaming_image
 
 docker-compose build
 
@@ -23,6 +40,12 @@ echo "Restarting docker service..."
 echo "--------------------------------------------------------------------"
 
 service docker restart
+
+echo "--------------------------------------------------------------------"
+echo "Network..."
+echo "--------------------------------------------------------------------"
+
+
 
 echo "--------------------------------------------------------------------"
 echo "Deploying in swarm cluster..."
