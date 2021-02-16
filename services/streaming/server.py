@@ -46,30 +46,33 @@ def get_sql_context_instance(spark_context):
 def process_hashtags_rdd(time, rdd):
     print("----------- %s -----------" % str(time))
     try:
-        # Get spark sql singleton context from the current context
-        sql_context = get_sql_context_instance(rdd.context)
-        # convert the RDD to Row RDD
-        row_rdd = rdd.map(lambda w: Row(hashtag=w[0], hashtag_count=w[1]))
+        if rdd.isEmpty() :
+            print("RDD CHEGOU VAZIO HASHTAG" )
+        else:
+            # Get spark sql singleton context from the current context
+            sql_context = get_sql_context_instance(rdd.context)
+            # convert the RDD to Row RDD
+            row_rdd = rdd.map(lambda w: Row(hashtag=w[0], hashtag_count=w[1]))
 
-        # create a DF from the Row RDD
-        hashtags_df = sql_context.createDataFrame(row_rdd)
+            # create a DF from the Row RDD
+            hashtags_df = sql_context.createDataFrame(row_rdd)
 
-        # Register the dataframe as table
-        hashtags_df.registerTempTable("hashtags")
-        # get the top 10 hashtags from the table using SQL and print them
-        hashtag_counts_df = sql_context.sql(
-            "select hashtag, hashtag_count from hashtags order by hashtag_count desc limit 10")
+            # Register the dataframe as table
+            hashtags_df.registerTempTable("hashtags")
+            # get the top 10 hashtags from the table using SQL and print them
+            hashtag_counts_df = sql_context.sql(
+                "select hashtag, hashtag_count from hashtags order by hashtag_count desc limit 10")
 
-        hashtag_counts_df.show()
+            hashtag_counts_df.show()
 
-        # extract the hashtags from dataframe and convert them into array
-        top_tags = [str(t.hashtag) for t in hashtag_counts_df.select("hashtag").collect()]
-        # extract the counts from dataframe and convert them into array
-        tags_count = [p.hashtag_count for p in hashtag_counts_df.select(
-            f"hashtag_count").collect()]
-        # initialize and send the data through REST API
-        request_data = {'label': str(top_tags), 'data': str(tags_count)}
-        requests.post(f'http://{os.environ[DASHBOARD_CLIENT]}:{os.environ[DASHBOARD_PORT]}/updateDataHashtag', data=request_data)
+            # extract the hashtags from dataframe and convert them into array
+            top_tags = [str(t.hashtag) for t in hashtag_counts_df.select("hashtag").collect()]
+            # extract the counts from dataframe and convert them into array
+            tags_count = [p.hashtag_count for p in hashtag_counts_df.select(
+                f"hashtag_count").collect()]
+            # initialize and send the data through REST API
+            request_data = {'label': str(top_tags), 'data': str(tags_count)}
+            requests.post(f'http://{os.environ[DASHBOARD_CLIENT]}:{os.environ[DASHBOARD_PORT]}/updateDataHashtag', data=request_data)
 
     except Exception as e:
         print("Error: %s" % e)
@@ -79,7 +82,7 @@ def process_words_rdd(time, rdd):
     print("----------- %s -----------" % str(time))
     try:
         if rdd.isEmpty() :
-            print("RDD CHEGOU VAZIO" )
+            print("RDD CHEGOU VAZIO WORDS" )
         else:
             # Get spark sql singleton context from the current context
             sql_context = get_sql_context_instance(rdd.context)
