@@ -78,30 +78,33 @@ def process_hashtags_rdd(time, rdd):
 def process_words_rdd(time, rdd):
     print("----------- %s -----------" % str(time))
     try:
-        # Get spark sql singleton context from the current context
-        sql_context = get_sql_context_instance(rdd.context)
-        # convert the RDD to Row RDD
-        row_rdd = rdd.map(lambda w: Row(word=w[0], word_count=w[1]))
+        if rdd.isEmpty() :
+            print("RDD CHEGOU VAZIO" )
+        else:
+            # Get spark sql singleton context from the current context
+            sql_context = get_sql_context_instance(rdd.context)
+            # convert the RDD to Row RDD
+            row_rdd = rdd.map(lambda w: Row(word=w[0], word_count=w[1]))
 
-        # create a DF from the Row RDD
-        words_df = sql_context.createDataFrame(row_rdd)
+            # create a DF from the Row RDD
+            words_df = sql_context.createDataFrame(row_rdd)
 
-        # Register the dataframe as table
-        words_df.registerTempTable("words")
-        # get the top 10 hashtags from the table using SQL and print them
-        trendigs_df = sql_context.sql(
-            "select word, word_count from words order by word_count desc limit 10")
+            # Register the dataframe as table
+            words_df.registerTempTable("words")
+            # get the top 10 hashtags from the table using SQL and print them
+            trendigs_df = sql_context.sql(
+                "select word, word_count from words order by word_count desc limit 10")
 
-        trendigs_df.show()
+            trendigs_df.show()
 
-        # extract the hashtags from dataframe and convert them into array
-        top_tags = [str(t.word) for t in trendigs_df.select("word").collect()]
-        # extract the counts from dataframe and convert them into array
-        tags_count = [p.word_count for p in trendigs_df.select(
-            f"word_count").collect()]
-        # initialize and send the data through REST API
-        request_data = {'label': str(top_tags), 'data': str(tags_count)}
-        requests.post(f'http://{os.environ[DASHBOARD_CLIENT]}:{os.environ[DASHBOARD_PORT]}/updateDataWord', data=request_data)
+            # extract the hashtags from dataframe and convert them into array
+            top_tags = [str(t.word) for t in trendigs_df.select("word").collect()]
+            # extract the counts from dataframe and convert them into array
+            tags_count = [p.word_count for p in trendigs_df.select(
+                f"word_count").collect()]
+            # initialize and send the data through REST API
+            request_data = {'label': str(top_tags), 'data': str(tags_count)}
+            requests.post(f'http://{os.environ[DASHBOARD_CLIENT]}:{os.environ[DASHBOARD_PORT]}/updateDataWord', data=request_data)
 
     except Exception as e:
         print("Error: %s" % e)
