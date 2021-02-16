@@ -27,7 +27,7 @@ services:
     deploy: *default-deploy-manager
 
   sparkmaster:
-    image: spark_image
+    image: spark_image:latest
     ports:
       - "4040:4040"
       - "7077:7077"
@@ -41,7 +41,7 @@ services:
       - global-volume:/checkpoint
 
   sparkworker:
-    image: spark_image
+    image: spark_image:latest
     entrypoint: dockerize -wait tcp://sparkmaster:7077 -timeout 240s /sbin/my_init
     ports:
       - "8081:8081"
@@ -56,7 +56,7 @@ services:
       - global-volume:/checkpoint
 
   streaming:
-    image: streaming_image
+    image: streaming_image:latest
     depends_on: 
       - sparkmaster
       - sparkworker
@@ -74,7 +74,7 @@ services:
       - global-volume:/checkpoint
 
   dashboards:
-    image: dashboards_image
+    image: dashboards_image:latest
     extra_hosts:
       - "dashboards:0.0.0.0"
     ports:
@@ -84,7 +84,7 @@ services:
       - cluster_network
 
   twitter:
-    image: twitter_image
+    image: twitter_image:latest
     extra_hosts:
       - "twitter:0.0.0.0"
     ports:
