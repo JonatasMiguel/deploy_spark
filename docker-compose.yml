@@ -18,32 +18,6 @@ x-deploy-worker: &default-deploy-worker
       - "node.role==worker"
 
 services:
-  namenode:
-    image: gradiant/hdfs:latest
-    volumes:
-      - name:/hadoop/dfs
-    command:
-      - namenode
-    ports:
-      - 8020:8020
-      - 50070:50070
-      - 9870:9870
-    networks:
-      - cluster_network
-    deploy: *default-deploy-manager
-
-  datanode-0:
-    image: gradiant/hdfs:latest
-    environment:
-      - CORE_CONF_fs_defaultFS=hdfs://namenode:8020
-    volumes:
-      - data-0:/hadoop/dfs
-    command:
-      - datanode
-    networks:
-     - cluster_network    
-    deploy: *default-deploy-worker
-
   visualizer:
     image: dockersamples/visualizer:latest
     volumes:
@@ -120,6 +94,32 @@ services:
     deploy: *default-deploy-worker
     networks:
       - cluster_network
+
+  namenode:
+    image: gradiant/hdfs:latest
+    volumes:
+      - name:/hadoop/dfs
+    command:
+      - namenode
+    ports:
+      - 8020:8020
+      - 50070:50070
+      - 9870:9870
+    networks:
+      - cluster_network
+    deploy: *default-deploy-manager
+
+  datanode-0:
+    image: gradiant/hdfs:latest
+    environment:
+      - CORE_CONF_fs_defaultFS=hdfs://namenode:8020
+    volumes:
+      - data-0:/hadoop/dfs
+    command:
+      - datanode
+    networks:
+     - cluster_network    
+    deploy: *default-deploy-worker    
 
 networks:
   cluster_network:
