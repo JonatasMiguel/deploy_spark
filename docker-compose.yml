@@ -100,7 +100,7 @@ services:
     volumes:
       - name:/hadoop/dfs
     command:
-      - namenode
+      - bash -c "namenode && hdfs dfs -mkdir /checkpoint/save"
     ports:
       - 8020:8020
       - 50070:50070
@@ -118,7 +118,7 @@ services:
     volumes:
       - data-0:/hadoop/dfs
     command:
-      - bash -c "datanode && hdfs dfs -mkdir /checkpoint/save"
+      - datanode
     networks:
      - cluster_network    
     deploy: *default-deploy-worker    
