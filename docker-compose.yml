@@ -100,7 +100,7 @@ services:
     volumes:
       - name:/hadoop/dfs
     command:
-      - bash -c "namenode && hdfs dfs -mkdir /checkpoint/save"
+      - namenode
     ports:
       - 8020:8020
       - 50070:50070
