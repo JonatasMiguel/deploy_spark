@@ -121,7 +121,7 @@ services:
       - datanode
     networks:
      - cluster_network    
-    deploy: *default-deploy-manager    
+    deploy: *default-deploy-worker   
 
 networks:
   cluster_network:
