@@ -101,6 +101,8 @@ services:
       - name:/hadoop/dfs
     command:
       - namenode
+    environment:
+      - HDFS_CONF_dfs_namenode_datanode_registration_ip___hostname___check=false
     ports:
       - 8020:8020
       - 50070:50070
