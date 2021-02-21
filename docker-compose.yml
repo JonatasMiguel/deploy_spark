@@ -231,6 +231,7 @@ networks:
     driver: overlay
   hostnet:
     external: true
+    name: host
     
     
 
