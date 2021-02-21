@@ -110,13 +110,12 @@ services:
       - 9870:9870
     networks:
       - cluster_network
-    
     deploy: 
       placement:
         constraints:
           - "node.role==manager"
       replicas: 1
-      endpoint_mode: dnsrr
+      
 
   datanode-0:
     image: gradiant/hdfs:latest
@@ -130,7 +129,6 @@ services:
       - datanode
     networks:
      - cluster_network  
-      
     deploy:   
       placement:
         constraints:
