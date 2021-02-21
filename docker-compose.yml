@@ -99,10 +99,6 @@ services:
   primary-namenode:
     hostname: primary-namenode
     image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
-    ports:
-      - "9876:50070"
-      - "9870:9870"
-      - "8020:8020"
     environment:
       - CLUSTER_NAME=DownunderHDFS
       - INIT_DAEMON_STEP=setup_hdfs
@@ -126,10 +122,11 @@ services:
     volumes:
       - primary-namenode:/hadoop/dfs/name
     networks:
-      - cluster_network
+      hostnet: {}
           # aliases:
           #   "primary-namenode"
     deploy:
+      endpoint_mode: dnsrr   
       mode: replicated
       replicas: 1
       # replicas: 
@@ -145,10 +142,6 @@ services:
   secondary-namenode:
     hostname: secondary-namenode
     image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
-    ports:
-      - "9877:50070"
-      - "9871:9870"
-      - "8021:8020"
     environment:
       - CLUSTER_NAME=DownunderHDFS
       # - INIT_DAEMON_STEP=setup_hdfs
@@ -171,8 +164,9 @@ services:
     volumes:
       - secondary-namenode:/hadoop/dfs/name
     networks:
-      - cluster_network
+      hostnet: {}
     deploy:
+      endpoint_mode: dnsrr   
       mode: replicated
       replicas: 1
       # replicas: 
@@ -207,24 +201,17 @@ services:
       - HDFS_CONF_dfs_namenode_servicerpc___bind___host=0.0.0.0
       - HDFS_CONF_dfs_namenode_http___bind___host=0.0.0.0
       - HDFS_CONF_dfs_namenode_https___bind___host=0.0.0.0
-    ports:
-      - "9878:50075"
-      - "9864:9864"
-      - "50020:50020"
-      - "41430:41430"
-      - "50010:50010"
-    links: 
-      - primary-namenode
     volumes:
       - datanode:/hadoop/dfs/data
     networks:
-      - cluster_network
+      hostnet: {} 
           # aliases:
           #   - "datanode"
     depends_on: 
       - primary-namenode
       - secondary-namenode
     deploy:
+      endpoint_mode: dnsrr   
       mode: global
       # replicas: 
       # update_config:
@@ -242,6 +229,9 @@ networks:
  cluster_network:
     attachable: true
     driver: overlay
+  hostnet:
+    external: true
+    
     
 
 volumes:
