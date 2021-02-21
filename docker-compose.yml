@@ -126,6 +126,9 @@ services:
       - data-0:/hadoop/dfs
     ports:
       - 50010:50010 
+      - 1019:1019 
+      - 50020:50020 
+      - 8019:8019 
     command:
       - datanode
     networks:
@@ -135,7 +138,7 @@ services:
         constraints:
           - "node.role==worker"
       replicas: 1
-      endpoint_mode: dnsrr
+      
       
 networks:
   cluster_network:
