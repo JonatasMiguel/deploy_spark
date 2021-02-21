@@ -126,7 +126,6 @@ services:
           # aliases:
           #   "primary-namenode"
     deploy:
-      endpoint_mode: dnsrr   
       mode: replicated
       replicas: 1
       # replicas: 
@@ -166,7 +165,6 @@ services:
     networks:
       hostnet: {}
     deploy:
-      endpoint_mode: dnsrr   
       mode: replicated
       replicas: 1
       # replicas: 
@@ -211,7 +209,6 @@ services:
       - primary-namenode
       - secondary-namenode
     deploy:
-      endpoint_mode: dnsrr   
       mode: global
       # replicas: 
       # update_config:
