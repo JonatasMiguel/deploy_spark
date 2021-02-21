@@ -110,7 +110,7 @@ services:
       - 9870:9870
       - 50010:50010 
     networks:
-      - cluster_network
+      hostnet: {}
     deploy: 
       placement:
         constraints:
@@ -128,7 +128,7 @@ services:
     command:
       - datanode
     networks:
-     - cluster_network  
+      hostnet: {}  
     deploy:   
       placement:
         constraints:
@@ -140,6 +140,9 @@ networks:
     attachable: true
     ipam:
        driver: default
+  hostnet:
+    external: true
+    name: host     
 
 volumes:
   global-volume:
