@@ -124,8 +124,8 @@ services:
       - datanode
     networks:
      - cluster_network    
-    replicas: 3
     deploy: *default-deploy-worker   
+      replicas: 3
 
 networks:
   cluster_network:
