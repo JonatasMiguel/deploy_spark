@@ -134,6 +134,7 @@ services:
     networks:
       hostnet: {} 
     deploy:   
+      mode: global
       placement:
         constraints:
           - "node.role==worker"
