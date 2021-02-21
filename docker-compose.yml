@@ -100,10 +100,9 @@ services:
     volumes:
       - hdfs_namenode:/hadoop-3.2.0/var/name_node
     command:
-      namenode -fs hdfs://${PRIMARY_HOST}:9000
+      namenode -fs hdfs://namenode:9000
     image: hadoop:3.2.0
-    environment:
-      - PRIMARY_HOST=namenode
+    
 
   hdfs_datanode:
     deploy:
@@ -113,10 +112,9 @@ services:
     volumes:
       - hdfs_datanode:/hadoop-3.2.0/var/data_node
     command:
-      datanode -fs hdfs://${PRIMARY_HOST}:9000
+      datanode -fs hdfs://namenode:9000
     image: hadoop:3.2.0
-    environment:
-      - PRIMARY_HOST=namenode
+    
 networks:
   cluster_network:
     attachable: true
