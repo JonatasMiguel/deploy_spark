@@ -133,8 +133,27 @@ services:
       placement:
         constraints:
           - "node.role==worker"
-      replicas: 3
+      replicas: 1
       endpoint_mode: dnsrr
+
+  datanode-1:
+    image: gradiant/hdfs:latest
+    depends_on: 
+      - namenode
+    environment:
+      - CORE_CONF_fs_defaultFS=hdfs://namenode:8020
+    volumes:
+      - data-1:/hadoop/dfs
+    command:
+      - datanode
+    networks:
+     - cluster_network  
+    deploy:   
+      placement:
+        constraints:
+          - "node.role==worker"
+      replicas: 1
+      endpoint_mode: dnsrr    
 
 networks:
   cluster_network:
@@ -145,4 +164,5 @@ networks:
 volumes:
   global-volume:
   data-0:
+  data-1:
   name:
