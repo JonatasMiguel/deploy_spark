@@ -109,6 +109,8 @@ services:
       - HDFS_CONF_dfs_datanode_use_datanode_hostname=true
     networks:
       hostnet: {}
+    extra_hosts:
+      - "namenode:0.0.0.0"
     deploy: 
       placement:
         constraints:
