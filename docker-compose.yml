@@ -108,6 +108,7 @@ services:
       - 8020:8020
       - 50070:50070
       - 9870:9870
+      - 50470:50470
     networks:
       - cluster_network
     deploy: 
@@ -129,6 +130,8 @@ services:
       - 1019:1019 
       - 50020:50020 
       - 8019:8019 
+      - 50075:50075
+      - 50475:50475
     command:
       - datanode
     networks:
