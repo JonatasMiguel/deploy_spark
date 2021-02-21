@@ -136,7 +136,7 @@ services:
         constraints:
           - "node.role==worker"
       replicas: 1
-      endpoint_mode: dnsrr
+      
 
   datanode-1:
     image: gradiant/hdfs:latest
@@ -155,7 +155,7 @@ services:
         constraints:
           - "node.role==worker"
       replicas: 1
-      endpoint_mode: dnsrr    
+         
 
 networks:
   cluster_network:
