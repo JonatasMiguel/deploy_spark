@@ -241,8 +241,7 @@ services:
 networks:
  cluster_network:
     attachable: true
-    ipam:
-       driver: default
+    driver: overlay
     
 
 volumes:
