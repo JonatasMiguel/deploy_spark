@@ -94,8 +94,7 @@ services:
       - cluster_network
 
   hdfs_namenode:
-    deploy:
-      <<: *deploy_default
+    deploy: *default-deploy-manager
     networks:
       hostnet: {}
     volumes:
