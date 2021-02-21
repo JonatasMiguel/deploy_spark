@@ -226,7 +226,7 @@ services:
       
       
 networks:
- cluster_network:
+  cluster_network:
     attachable: true
     driver: overlay
   hostnet:
