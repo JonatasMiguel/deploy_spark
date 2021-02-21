@@ -95,56 +95,149 @@ services:
     networks:
       - cluster_network
 
-  namenode:
-    image: gradiant/hdfs:latest
-    volumes:
-      - name:/hadoop/dfs
-    command:
-      - namenode
+  primary-namenode:
+    hostname: primary-namenode
+    image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
+    ports:
+      - "9876:50070"
+      - "9870:9870"
+      - "8020:8020"
     environment:
-      - CORE_CONF_fs_defaultFS=hdfs://namenode:8020
+      - CLUSTER_NAME=DownunderHDFS
+      - INIT_DAEMON_STEP=setup_hdfs
+      - HDFS_CONF_dfs_webhdfs_enabled=true
+      - HDFS_CONF_dfs_permissions_enabled=false
+      # - HDFS_CONF_dfs_disk_balancer_enabled=false
+      - HDFS_CONF_dfs_namenode_datanode_registration_iphostnamecheck=true
+      - CORE_CONF_hadoop_http_staticuser_user=root
+      - CORE_CONF_hadoop_proxyuser_hue_hosts=*
+      - CORE_CONF_hadoop_proxyuser_hue_groups=*
+      - CORE_CONF_io_compression_codecs=org.apache.hadoop.io.compress.SnappyCodec
       - HDFS_CONF_dfs_namenode_datanode_registration_ip___hostname___check=false
-      - HDFS_CONF_dfs_permissions=false
+      - HDFS_CONF_dfs_namenode_datanode_registration_ip___io___check=false
       - HDFS_CONF_dfs_client_use_datanode_hostname=true
       - HDFS_CONF_dfs_datanode_use_datanode_hostname=true
+      - HDFS_CONF_dfs_disk_balancer_enabled=true
+      - HDFS_CONF_dfs_namenode_rpc___bind___host=0.0.0.0
+      - HDFS_CONF_dfs_namenode_servicerpc___bind___host=0.0.0.0
+      - HDFS_CONF_dfs_namenode_http___bind___host=0.0.0.0
+      - HDFS_CONF_dfs_namenode_https___bind___host=0.0.0.0
+    volumes:
+      - primary-namenode:/hadoop/dfs/name
     networks:
-      hostnet: {}
-    extra_hosts:
-      - "namenode:0.0.0.0"
-    deploy: 
-      placement:
-        constraints:
-          - "node.role==manager"
+      - cluster_network
+          # aliases:
+          #   "primary-namenode"
+    deploy:
+      mode: replicated
       replicas: 1
-     
-  datanode-0:
-    image: gradiant/hdfs:latest
-    depends_on: 
-      - namenode
-    environment:
-      - CORE_CONF_fs_defaultFS=hdfs://namenode:8020
-      - HDFS_CONF_dfs_namenode_datanode_registration_ip___hostname___check=false
-      - HDFS_CONF_dfs_permissions=false
-      - HDFS_CONF_dfs_client_use_datanode_hostname=true
-      - HDFS_CONF_dfs_datanode_use_datanode_hostname=true
-    volumes:
-      - data-0:/hadoop/dfs
-    command:
-      - datanode
-    networks:
-      hostnet: {} 
-    deploy:   
-      mode: global
+      # replicas: 
+      # update_config:
+      #   parallelism: 2
+      #   delay: 10s
+      restart_policy:
+        condition: on-failure
       placement:
         constraints:
-          - "node.role==worker"
+          - node.role == manager
+
+  secondary-namenode:
+    hostname: secondary-namenode
+    image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
+    ports:
+      - "9877:50070"
+      - "9871:9870"
+      - "8021:8020"
+    environment:
+      - CLUSTER_NAME=DownunderHDFS
+      # - INIT_DAEMON_STEP=setup_hdfs
+      - HDFS_CONF_dfs_webhdfs_enabled=true
+      - HDFS_CONF_dfs_permissions_enabled=false
+      - HDFS_CONF_dfs_namenode_datanode_registration_iphostnamecheck=true
+      - CORE_CONF_hadoop_http_staticuser_user=root
+      - CORE_CONF_hadoop_proxyuser_hue_hosts=*
+      - CORE_CONF_hadoop_proxyuser_hue_groups=*
+      - CORE_CONF_io_compression_codecs=org.apache.hadoop.io.compress.SnappyCodec
+      - HDFS_CONF_dfs_namenode_datanode_registration_ip___hostname___check=false
+      - HDFS_CONF_dfs_namenode_datanode_registration_ip___io___check=false
+      - HDFS_CONF_dfs_client_use_datanode_hostname=true
+      - HDFS_CONF_dfs_datanode_use_datanode_hostname=true
+      - HDFS_CONF_dfs_disk_balancer_enabled=true
+      - HDFS_CONF_dfs_namenode_rpc___bind___host=0.0.0.0
+      - HDFS_CONF_dfs_namenode_servicerpc___bind___host=0.0.0.0
+      - HDFS_CONF_dfs_namenode_http___bind___host=0.0.0.0
+      - HDFS_CONF_dfs_namenode_https___bind___host=0.0.0.0
+    volumes:
+      - secondary-namenode:/hadoop/dfs/name
+    networks:
+      - cluster_network
+    deploy:
+      mode: replicated
+      replicas: 1
+      # replicas: 
+      # update_config:
+      #   parallelism: 2
+      #   delay: 10s
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints:
+          - node.role == worker        
+     
+  datanode:
+    hostname: datanode
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    environment:
+      - CLUSTER_NAME=DownunderHDFS
+      - CORE_CONF_fs_defaultFS=hdfs://primary-namenode:8020
+      - HDFS_CONF_dfs_webhdfs_enabled=true
+      - HDFS_CONF_dfs_namenode_datanode_registration_iphostnamecheck=true
+      - CORE_CONF_hadoop_http_staticuser_user=root
+      - CORE_CONF_hadoop_proxyuser_hue_hosts=*
+      - CORE_CONF_hadoop_proxyuser_hue_groups=*
+      - CORE_CONF_io_compression_codecs=org.apache.hadoop.io.compress.SnappyCodec
+      - HDFS_CONF_dfs_permissions_enabled=false
+      - HDFS_CONF_dfs_namenode_datanode_registration_ip___hostname___check=false
+      - HDFS_CONF_dfs_namenode_datanode_registration_ip___io___check=false
+      - HDFS_CONF_dfs_client_use_datanode_hostname=true
+      - HDFS_CONF_dfs_datanode_use_datanode_hostname=true
+      - HDFS_CONF_dfs_disk_balancer_enabled=true
+      - HDFS_CONF_dfs_namenode_rpc___bind___host=0.0.0.0
+      - HDFS_CONF_dfs_namenode_servicerpc___bind___host=0.0.0.0
+      - HDFS_CONF_dfs_namenode_http___bind___host=0.0.0.0
+      - HDFS_CONF_dfs_namenode_https___bind___host=0.0.0.0
+    ports:
+      - "9878:50075"
+      - "9864:9864"
+      - "50020:50020"
+      - "41430:41430"
+      - "50010:50010"
+    links: 
+      - primary-namenode
+    volumes:
+      - datanode:/hadoop/dfs/data
+    networks:
+      - cluster_network
+          # aliases:
+          #   - "datanode"
+    depends_on: 
+      - primary-namenode
+      - secondary-namenode
+    deploy:
+      mode: global
+      # replicas: 
+      # update_config:
+      #   parallelism: 2
+      #   delay: 10s
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints:
+          - node.role == worker
       
       
       
 networks:
- hostnet:
-    external: true
-    name: host
  cluster_network:
     attachable: true
     ipam:
@@ -156,3 +249,6 @@ volumes:
   data-0:
   data-1:
   name:
+  primary-namenode:
+  secondary-namenode:
+  datanode:
