@@ -104,6 +104,8 @@ services:
     environment:
       - HDFS_CONF_dfs_namenode_datanode_registration_ip___hostname___check=false
       - HDFS_CONF_dfs_permissions=false
+      - HDFS_CONF_dfs_client_use_datanode_hostname=true
+      - HDFS_CONF_dfs_datanode_use_datanode_hostname=true
     ports:
       - 8020:8020
       - 50070:50070
@@ -132,6 +134,8 @@ services:
       - 8019:8019 
       - 50075:50075
       - 50475:50475
+      - 1019:1019
+      - 1022:1022
     command:
       - datanode
     networks:
