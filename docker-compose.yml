@@ -102,6 +102,8 @@ services:
     command:
       namenode -fs hdfs://${PRIMARY_HOST}:9000
     image: hadoop:3.2.0
+    environment:
+      - PRIMARY_HOST=namenode
 
   hdfs_datanode:
     deploy:
@@ -113,7 +115,8 @@ services:
     command:
       datanode -fs hdfs://${PRIMARY_HOST}:9000
     image: hadoop:3.2.0
-
+    environment:
+      - PRIMARY_HOST=namenode
 networks:
   cluster_network:
     attachable: true
