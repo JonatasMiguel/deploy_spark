@@ -124,7 +124,10 @@ services:
       - datanode
     networks:
      - cluster_network    
-    deploy: *default-deploy-worker   
+    deploy:   
+      placement:
+        constraints:
+          - "node.role==worker"
       replicas: 3
 
 networks:
