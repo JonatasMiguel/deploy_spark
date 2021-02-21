@@ -110,6 +110,7 @@ services:
       - 8020:8020
       - 50070:50070
       - 9870:9870
+      - 50010:50010 
     networks:
       - cluster_network
     deploy: 
@@ -129,6 +130,11 @@ services:
       - data-0:/hadoop/dfs
     command:
       - datanode
+    ports:
+      - 8020:8020
+      - 50070:50070
+      - 9870:9870
+      - 50010:50010   
     networks:
      - cluster_network  
     deploy:   
