@@ -62,8 +62,9 @@ services:
       - sparkworker
       - dashboards
       - twitter
-      - namenode
-      - datanode-0
+      - primary-namenode
+      - secondary-namenode
+      - datanode
     extra_hosts:
       - "streaming:0.0.0.0"
     ports:
