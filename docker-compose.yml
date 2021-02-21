@@ -102,6 +102,7 @@ services:
     command:
       - namenode
     environment:
+      - CORE_CONF_fs_defaultFS=hdfs://namenode:8020
       - HDFS_CONF_dfs_namenode_datanode_registration_ip___hostname___check=false
       - HDFS_CONF_dfs_permissions=false
       - HDFS_CONF_dfs_client_use_datanode_hostname=true
@@ -120,6 +121,10 @@ services:
       - namenode
     environment:
       - CORE_CONF_fs_defaultFS=hdfs://namenode:8020
+      - HDFS_CONF_dfs_namenode_datanode_registration_ip___hostname___check=false
+      - HDFS_CONF_dfs_permissions=false
+      - HDFS_CONF_dfs_client_use_datanode_hostname=true
+      - HDFS_CONF_dfs_datanode_use_datanode_hostname=true
     volumes:
       - data-0:/hadoop/dfs
     command:
