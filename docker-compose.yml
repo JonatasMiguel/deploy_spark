@@ -110,6 +110,7 @@ services:
       - 9870:9870
     networks:
       - cluster_network
+    endpoint_mode: dnsrr
     deploy: *default-deploy-manager
 
   datanode-0:
@@ -123,7 +124,8 @@ services:
     command:
       - datanode
     networks:
-     - cluster_network    
+     - cluster_network  
+    endpoint_mode: dnsrr  
     deploy:   
       placement:
         constraints:
