@@ -138,7 +138,7 @@ services:
       placement:
         constraints:
           - "node.role==worker"
-      replicas: 1
+      
       
       
 networks:
