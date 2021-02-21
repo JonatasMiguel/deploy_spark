@@ -113,6 +113,8 @@ services:
       - 50470:50470
     networks:
       - cluster_network
+    extra_hosts:
+      - "namenode:0.0.0.0"
     deploy: 
       placement:
         constraints:
